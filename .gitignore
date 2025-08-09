@@ -5,3 +5,9 @@ backend/node_modules
 /node_modules
 coverage/
 .idea/
+terraform/.terraform
+terraform/.terraform.lock.hcl
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/terra-key.pub
+terraform/terra-key
