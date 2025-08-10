@@ -15,6 +15,13 @@ This project demonstrates an end-to-end CI/CD pipeline deployed on AWS, with:
 
 ---
 
+
+## 🖥️ Architecture Diagram
+
+
+
+---
+
 ## 🛠 Tech Stack
 
 | Tool                                                                                                                       | Purpose                 |
@@ -30,6 +37,16 @@ This project demonstrates an end-to-end CI/CD pipeline deployed on AWS, with:
 | ![Grafana](https://img.shields.io/badge/Grafana-%23F46800.svg?style=for-the-badge\&logo=grafana\&logoColor=white)          | Dashboard Visualization |
 
 ---
+## 📂 Project Structure
+
+```plaintext
+project/
+├── terraform/          # Terraform code for infrastructure provisioning
+├── jenkins/            # Jenkins pipeline and configs
+├── k8s-manifests/      # Kubernetes YAML manifests for service
+
+```
+---
 
 ## ⚙️ Infrastructure Setup
 
@@ -43,7 +60,7 @@ terraform apply -auto-approve
 ```
 
 🖼️ *EC2 Instance Created:*
-![EC2 Instance](ec2.png)
+![EC2 Instance](resource/ec2.png)
 
 ---
 
@@ -89,21 +106,21 @@ eksctl create cluster \
 ### Jenkins CI Pipeline (Build, Scan, Push)
 
 🖼️ *CI Pipeline Screenshot:*
-![CI](CI.png)
+![CI](resource/CI.png)
 
 ---
 
 ### Jenkins CD Pipeline (Deploy to EKS)
 
 🖼️ *CD Pipeline Screenshot:*
-![CD](CD.png)
+![CD](resource/CD.png)
 
 ---
 
 ### Email Notification after Pipeline Success
 
 🖼️ *Email Screenshot:*
-![Email](email.png)
+![Email](resource/email.png)
 
 ---
 
@@ -117,8 +134,8 @@ kubectl get svc -n argocd
 ```
 
 🖼️ *ArgoCD UI:*
-![ArgoCD1](argocd1.png)
-![ArgoCD2](argocd2.png)
+![ArgoCD1](resource/argocd1.png)
+![ArgoCD2](resource/argocd2.png)
 
 ---
 
@@ -140,7 +157,7 @@ kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "NodePort"}}'
 ```
 
 🖼️ *Prometheus & Grafana UI:*
-![Grafana](grafana.png)
+![Grafana](resource/grafana.png)
 
 ---
 
@@ -148,9 +165,9 @@ kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "NodePort"}}'
 
 | Description                  | Image                       |
 | ---------------------------- | --------------------------- |
-| Pipeline Success Output      | ![Output1](output.png)      |
-| Pipeline Output (Stage View) | ![Output2](output2.png)     |
-| SonarQube Analysis           | ![SonarQube](sonarqube.png) |
+| Pipeline Success Output      | ![Output1](resource/output.png)      |
+| Pipeline Output (Stage View) | ![Output2](resource/output2.png)     |
+| SonarQube Analysis           | ![SonarQube](resource/sonarqube.png) |
 
 ---
 
