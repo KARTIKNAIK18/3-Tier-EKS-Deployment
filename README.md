@@ -109,7 +109,7 @@ eksctl create cluster \
 ```
 ---
 
-### 🏗️ EC2 & EKS Cluster Instance Created:*
+### 🏗️ EC2 & EKS Cluster Instance Created:
 ![EC2 Instance](resource/ec2.png)
 
 --
