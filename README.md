@@ -1,6 +1,18 @@
 
+<p align="center">
+  <img src="https://img.icons8.com/color/96/jenkins.png" alt="Jenkins" height="80"/>
+  <img src="https://img.icons8.com/color/96/kubernetes.png" alt="Kubernetes" height="80"/>
+  <img src="https://img.icons8.com/color/96/grafana.png" alt="Grafana" height="80"/>
+  <img src="https://argo-cd.readthedocs.io/en/stable/assets/argo.png" alt="ArgoCD" height="80"/>
+  <img src="https://img.icons8.com/color/96/terraform.png" alt="Terraform" height="80"/>
+</p>
 
-# 🚀 End-to-End DevOps Project — Jenkins, EKS, ArgoCD, Prometheus, Grafana
+<h1 align="center">End-to-End DevOps Project — Jenkins, EKS, ArgoCD, Prometheus, Grafana</h1>
+
+<p align="center">
+A fully automated CI/CD pipeline on AWS using Jenkins, SonarQube, ArgoCD, Prometheus & Grafana — with Terraform provisioning.
+</p>
+
 
 ## 📜 Overview
 
@@ -97,12 +109,12 @@ eksctl create cluster \
 ```
 ---
 
-EC2 & EKS Cluster Instance Created:*
+### 🏗️ EC2 & EKS Cluster Instance Created:*
 ![EC2 Instance](resource/ec2.png)
 
 --
 
-##  CI/CD Pipeline
+## 🔄 CI/CD Pipeline
 
 ### Jenkins CI Pipeline (Build, Scan, Push)
 
@@ -111,23 +123,23 @@ EC2 & EKS Cluster Instance Created:*
 
 ---
 
-### Jenkins CD Pipeline (Deploy to EKS)
+### 🔄Jenkins CD Pipeline (Deploy to EKS)
 
 *CD Pipeline Screenshot:*
 ![CD](resource/CD.png)
 
 ---
 
-### Email Notification after Pipeline Success
+### 📧 Email Notification after Pipeline Success
 
 *Email Screenshot:*
 ![Email](resource/email.png)
 
 ---
 
-### SonarQube Analysis report
+### 🔍 SonarQube Analysis report
 
-[SonarQube](resource/sonarqube.png) |
+![SonarQube](resource/sonarqube.png)
 
 ---
 ## 📦 Kubernetes & ArgoCD Setup
@@ -140,11 +152,11 @@ kubectl get svc -n argocd
 ```
 
 ---
-## Argo cd application Created
+## 🧭 Argo cd application Created
 ![ArgoCD1](resource/argocd1.png)
 ---
 ---
-## Argo cd application Deployment
+## 🧭 Argo cd application Deployment
 ![ArgoCD2](resource/argocd2.png)
 
 ---
@@ -171,7 +183,7 @@ kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "NodePort"}}'
 
 ---
 
-##  Output Screenshots
+## 🏆 Output Screenshots
 
 | Description                  | Image                       |
 | ---------------------------- | --------------------------- |
@@ -180,7 +192,7 @@ kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "NodePort"}}'
 
 ---
 
-##  Commands Reference
+##  ✅ Commands Reference
 
 ```bash
 # Terraform
@@ -203,12 +215,4 @@ kubectl patch svc prometheus-server -n monitoring -p '{"spec": {"type": "NodePor
 # Grafana NodePort Access
 kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "NodePort"}}'
 ```
-
 ---
-
-
-
----
-
-If you want, I can now give you a **separate `.md` file** with this exact README so you can directly push to GitHub without formatting issues.
-Do you want me to prepare that file?
