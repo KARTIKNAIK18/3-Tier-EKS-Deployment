@@ -1,200 +1,188 @@
 ---
 
-# 🚀 WanderLust — MERN Travel Blog with Full DevOps Pipeline
+# 🚀 End-to-End DevOps Project — Jenkins, EKS, ArgoCD, Prometheus, Grafana
 
-A simple **MERN-based** travel blog application deployed using **modern DevOps practices**.
-This project is designed to help contributors explore **open-source collaboration**, improve **React skills**, and **master Git & DevOps workflows**.
+## 📜 Overview
 
----
+This project demonstrates an end-to-end CI/CD pipeline deployed on AWS, with:
 
-## 📑 Table of Contents
-
-1. [📸 Architecture](#-architecture)
-2. [🛠 Tech Stack](#-tech-stack)
-3. [⚙️ Infrastructure Setup](#%EF%B8%8F-infrastructure-setup)
-4. [🔄 CI/CD Pipeline](#-cicd-pipeline)
-5. [📊 Monitoring](#-monitoring)
-6. [📧 Email Notifications](#-email-notifications)
-7. [📊 Example Outputs](#-example-outputs)
-
----
-
-## 📸 Architecture
-
-![EC2 Setup](resource/ec2.png)
+* Terraform-based infrastructure provisioning
+* Jenkins for CI/CD
+* SonarQube, OWASP Dependency Check, Trivy for code quality & security scanning
+* Amazon EKS for Kubernetes cluster hosting
+* ArgoCD for GitOps-based CD
+* Prometheus & Grafana for monitoring
 
 ---
 
 ## 🛠 Tech Stack
 
-* **GitHub** — Source Code Management
-* **Docker** — Containerization
-* **Jenkins** — Continuous Integration (CI)
-* **OWASP Dependency Check** — Security Scanning
-* **SonarQube** — Code Quality Analysis
-* **Trivy** — Filesystem & Docker Image Scanning
-* **ArgoCD** — Continuous Deployment (CD)
-* **Redis** — Caching Layer
-* **AWS EKS (Kubernetes)** — Orchestration
-* **Helm** — Package Management
-* **Grafana & Prometheus** — Monitoring
+| Tool                                                                                                                       | Purpose                 |
+| -------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| ![Terraform](https://img.shields.io/badge/Terraform-%235835CC.svg?style=for-the-badge\&logo=terraform\&logoColor=white)    | Infrastructure as Code  |
+| ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge\&logo=amazonaws\&logoColor=white)                | Cloud Hosting           |
+| ![Jenkins](https://img.shields.io/badge/Jenkins-%23D24939.svg?style=for-the-badge\&logo=jenkins\&logoColor=white)          | CI/CD Pipeline          |
+| ![SonarQube](https://img.shields.io/badge/SonarQube-%234E9BCD.svg?style=for-the-badge\&logo=sonarqube\&logoColor=white)    | Code Quality            |
+| ![Docker](https://img.shields.io/badge/Docker-%230db7ed.svg?style=for-the-badge\&logo=docker\&logoColor=white)             | Containerization        |
+| ![Kubernetes](https://img.shields.io/badge/Kubernetes-%23326ce5.svg?style=for-the-badge\&logo=kubernetes\&logoColor=white) | Container Orchestration |
+| ![ArgoCD](https://img.shields.io/badge/ArgoCD-%23EF7B4D.svg?style=for-the-badge\&logo=argo\&logoColor=white)               | GitOps CD               |
+| ![Prometheus](https://img.shields.io/badge/Prometheus-%23E6522C.svg?style=for-the-badge\&logo=prometheus\&logoColor=white) | Monitoring              |
+| ![Grafana](https://img.shields.io/badge/Grafana-%23F46800.svg?style=for-the-badge\&logo=grafana\&logoColor=white)          | Dashboard Visualization |
 
 ---
 
 ## ⚙️ Infrastructure Setup
 
-### **1️⃣ Provision EC2 Host via Terraform**
+### 1️⃣ Provision EC2 Host via Terraform
 
 ```bash
-cd terraform/
+cd terraform
 terraform init
-terraform validate
 terraform plan
 terraform apply -auto-approve
 ```
 
+🖼️ *EC2 Instance Created:*
+![EC2 Instance](ec2.png)
+
 ---
 
-### **2️⃣ Install Required Tools on Host**
+### 2️⃣ Install Required Tools on EC2
 
 ```bash
-# Update system
 sudo apt-get update && sudo apt-get upgrade -y
-
-# Docker
-sudo apt-get install docker.io -y
+sudo apt-get install docker.io docker-compose-v2 -y
 sudo usermod -aG docker $USER && newgrp docker
+sudo systemctl enable docker && sudo systemctl start docker
 
-# Jenkins
-wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
-sudo sh -c 'echo deb http://pkg.jenkins.io/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
+# Java & Jenkins
+sudo apt install fontconfig openjdk-21-jre -y
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \
+  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
 sudo apt-get update && sudo apt-get install jenkins -y
-sudo systemctl enable jenkins && sudo systemctl start jenkins
 
-# OWASP Dependency Check
-wget https://github.com/jeremylong/DependencyCheck/releases/download/vX.X.X/dependency-check-X.X.X-release.zip
-unzip dependency-check-*.zip -d /opt
-
-# SonarQube
-docker run -d --name sonarqube -p 9000:9000 sonarqube:lts
-
-# Trivy
-sudo apt-get install wget apt-transport-https gnupg lsb-release -y
-wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
-sudo apt-get update && sudo apt-get install trivy -y
+# SonarQube, Trivy, AWS CLI, eksctl, kubectl
 ```
 
 ---
 
-### **3️⃣ Install AWS CLI, eksctl & kubectl**
-
-```bash
-# AWS CLI
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip && sudo ./aws/install
-
-# eksctl
-curl -s https://api.github.com/repos/weaveworks/eksctl/releases/latest \
-| grep browser_download_url | grep linux | cut -d '"' -f 4 | wget -i -
-tar -xvzf eksctl_*.tar.gz -C /usr/local/bin
-
-# kubectl
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-chmod +x kubectl && sudo mv kubectl /usr/local/bin/
-```
-
----
-
-### **4️⃣ Configure AWS & Create EKS Cluster**
+### 3️⃣ Configure AWS & EKS
 
 ```bash
 aws configure
-# Enter Access Key, Secret Key, Region
-
 eksctl create cluster \
---name wanderlust-cluster \
---region us-east-1 \
---nodegroup-name wanderlust-nodes \
---node-type t2.large \
---nodes 2
+  --name my-cluster \
+  --version 1.28 \
+  --region us-east-1 \
+  --nodegroup-name linux-nodes \
+  --node-type t2.large \
+  --nodes 2
 ```
 
 ---
 
-## 🔄 CI/CD Pipeline
+## 🚀 CI/CD Pipeline
 
-### **📌 CI with Jenkins**
+### Jenkins CI Pipeline (Build, Scan, Push)
 
-![CI Pipeline](resource/CI.png)
-
-**Stages:**
-
-1. Build & Test
-2. Security Scan — OWASP & Trivy
-3. Code Quality — SonarQube
-4. Docker Build & Push
+🖼️ *CI Pipeline Screenshot:*
+![CI](CI.png)
 
 ---
 
-### **📌 CD with ArgoCD**
+### Jenkins CD Pipeline (Deploy to EKS)
 
-![CD Pipeline](resource/CD.png)
-![ArgoCD UI](resource/argocd1.png)
-![ArgoCD Deployment](resource/argocd2.png)
+🖼️ *CD Pipeline Screenshot:*
+![CD](CD.png)
+
+---
+
+### Email Notification after Pipeline Success
+
+🖼️ *Email Screenshot:*
+![Email](email.png)
+
+---
+
+## 📦 Kubernetes & ArgoCD Setup
 
 ```bash
-kubectl edit svc argocd-server -n argocd
-# Change:
-# type: ClusterIP → type: NodePort
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
+kubectl get svc -n argocd
 ```
 
-Access at:
-
-```
-http://<NODE_IP>:<NODE_PORT>
-```
+🖼️ *ArgoCD UI:*
+![ArgoCD1](argocd1.png)
+![ArgoCD2](argocd2.png)
 
 ---
 
-## 📊 Monitoring
+## 📊 Monitoring — Prometheus & Grafana
 
-### **📍 Prometheus & Grafana via Helm**
+### Install via Helm
 
 ```bash
-# Prometheus
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm install prometheus prometheus-community/prometheus
+helm repo update
+
+# Prometheus
+helm install prometheus prometheus-community/prometheus --namespace monitoring --create-namespace
+kubectl patch svc prometheus-server -n monitoring -p '{"spec": {"type": "NodePort"}}'
 
 # Grafana
-helm repo add grafana https://grafana.github.io/helm-charts
-helm install grafana grafana/grafana
-
-# Change services to NodePort for external access
-kubectl edit svc grafana
-kubectl edit svc prometheus-server
+helm install grafana grafana/grafana --namespace monitoring
+kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "NodePort"}}'
 ```
 
-![Grafana Dashboard](resource/grafana.png)
+🖼️ *Prometheus & Grafana UI:*
+![Grafana](grafana.png)
 
 ---
 
-## 📧 Email Notifications
+## 🖼️ Output Screenshots
 
-![Email Notification](resource/email.png)
-
-Configure **Email Extension Plugin** in Jenkins for pipeline completion alerts.
-
----
-
-## 📊 Example Outputs
-
-![App Output](resource/output.png)
-![App Output 2](resource/output2.png)
-![SonarQube Analysis](resource/sonarqube.png)
+| Description                  | Image                       |
+| ---------------------------- | --------------------------- |
+| Pipeline Success Output      | ![Output1](output.png)      |
+| Pipeline Output (Stage View) | ![Output2](output2.png)     |
+| SonarQube Analysis           | ![SonarQube](sonarqube.png) |
 
 ---
 
-If you want, I can now **add a full Jenkinsfile (CI & CD)** section into this README so anyone can run the pipeline end-to-end without guessing. That would make it a one-stop deployment guide.
+## 📌 Commands Reference
 
-Do you want me to include the Jenkinsfiles next?
+```bash
+# Terraform
+terraform init
+terraform plan
+terraform apply -auto-approve
+
+# AWS CLI
+aws configure
+
+# EKS Cluster
+eksctl create cluster ...
+
+# ArgoCD NodePort Access
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
+
+# Prometheus NodePort Access
+kubectl patch svc prometheus-server -n monitoring -p '{"spec": {"type": "NodePort"}}'
+
+# Grafana NodePort Access
+kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "NodePort"}}'
+```
+
+---
+
+
+
+---
+
+If you want, I can now give you a **separate `.md` file** with this exact README so you can directly push to GitHub without formatting issues.
+Do you want me to prepare that file?
