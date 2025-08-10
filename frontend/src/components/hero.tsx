@@ -6,7 +6,7 @@ function hero() {
         Dive into the world of travel with stories that transport you to far-off lands. Adventure
         awaits around every corner. It's time to explore the world!
       </p>
-      <div className="cursor-text text-sm font-semibold md:text-xl">Let's go!</div>
+      <div className="cursor-text text-sm font-semibold md:text-xl">Let's go Buddy or Trip!</div>
     </div>
   );
 }
