@@ -17,6 +17,8 @@ This project demonstrates an end-to-end CI/CD pipeline deployed on AWS, with:
 
 
 ## 🖥️ Architecture Diagram
+---
+![Architecture](resource/DevSecOps+GitOps.gif)
 
 ---
 
