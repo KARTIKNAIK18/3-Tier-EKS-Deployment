@@ -1,15 +1,3 @@
-
-Alright — I’ll rewrite your README into a **fully polished, professional version** with:
-
-* Table of Contents
-* Clean section headings & emojis
-* Your provided images placed in the correct spots in the workflow
-* NodePort access for ArgoCD, Grafana, Prometheus instead of port-forward
-* Exact execution commands for each step
-* Final structure matching top-tier GitHub projects
-
-Here’s the complete README:
-
 ---
 
 # 🚀 WanderLust — MERN Travel Blog with Full DevOps Pipeline
@@ -33,7 +21,7 @@ This project is designed to help contributors explore **open-source collaboratio
 
 ## 📸 Architecture
 
-![EC2 Setup](ec2.png)
+![EC2 Setup](resource/ec2.png)
 
 ---
 
@@ -138,7 +126,7 @@ eksctl create cluster \
 
 ### **📌 CI with Jenkins**
 
-![CI Pipeline](CI.png)
+![CI Pipeline](resource/CI.png)
 
 **Stages:**
 
@@ -151,9 +139,9 @@ eksctl create cluster \
 
 ### **📌 CD with ArgoCD**
 
-![CD Pipeline](CD.png)
-![ArgoCD UI](argocd1.png)
-![ArgoCD Deployment](argocd2.png)
+![CD Pipeline](resource/CD.png)
+![ArgoCD UI](resource/argocd1.png)
+![ArgoCD Deployment](resource/argocd2.png)
 
 ```bash
 kubectl edit svc argocd-server -n argocd
@@ -187,13 +175,13 @@ kubectl edit svc grafana
 kubectl edit svc prometheus-server
 ```
 
-![Grafana Dashboard](grafana.png)
+![Grafana Dashboard](resource/grafana.png)
 
 ---
 
 ## 📧 Email Notifications
 
-![Email Notification](email.png)
+![Email Notification](resource/email.png)
 
 Configure **Email Extension Plugin** in Jenkins for pipeline completion alerts.
 
@@ -201,9 +189,9 @@ Configure **Email Extension Plugin** in Jenkins for pipeline completion alerts.
 
 ## 📊 Example Outputs
 
-![App Output](output.png)
-![App Output 2](output2.png)
-![SonarQube Analysis](sonarqube.png)
+![App Output](resource/output.png)
+![App Output 2](resource/output2.png)
+![SonarQube Analysis](resource/sonarqube.png)
 
 ---
 
