@@ -18,8 +18,6 @@ This project demonstrates an end-to-end CI/CD pipeline deployed on AWS, with:
 
 ## 🖥️ Architecture Diagram
 
-
-
 ---
 
 ## 🛠 Tech Stack
@@ -42,9 +40,10 @@ This project demonstrates an end-to-end CI/CD pipeline deployed on AWS, with:
 ```plaintext
 project/
 ├── terraform/          # Terraform code for infrastructure provisioning
-├── jenkins/            # Jenkins pipeline and configs
-├── k8s-manifests/      # Kubernetes YAML manifests for service
-
+├── Gitops              # Jenkins pipeline for the Deployment
+├── K8s                 # Kubernetes YAML manifests for service
+|── Frontend            # cContaines the Frontend files with Dokerfile
+|── Backend             # cContaines the backend files with Dockerfile
 ```
 ---
 
@@ -58,10 +57,6 @@ terraform init
 terraform plan
 terraform apply -auto-approve
 ```
-
-🖼️ *EC2 Instance Created:*
-![EC2 Instance](resource/ec2.png)
-
 ---
 
 ### 2️⃣ Install Required Tools on EC2
@@ -98,32 +93,41 @@ eksctl create cluster \
   --node-type t2.large \
   --nodes 2
 ```
-
 ---
 
-## 🚀 CI/CD Pipeline
+EC2 & EKS Cluster Instance Created:*
+![EC2 Instance](resource/ec2.png)
+
+--
+
+##  CI/CD Pipeline
 
 ### Jenkins CI Pipeline (Build, Scan, Push)
 
-🖼️ *CI Pipeline Screenshot:*
+*CI Pipeline Screenshot:*
 ![CI](resource/CI.png)
 
 ---
 
 ### Jenkins CD Pipeline (Deploy to EKS)
 
-🖼️ *CD Pipeline Screenshot:*
+*CD Pipeline Screenshot:*
 ![CD](resource/CD.png)
 
 ---
 
 ### Email Notification after Pipeline Success
 
-🖼️ *Email Screenshot:*
+*Email Screenshot:*
 ![Email](resource/email.png)
 
 ---
 
+### SonarQube Analysis report
+
+[SonarQube](resource/sonarqube.png) |
+
+---
 ## 📦 Kubernetes & ArgoCD Setup
 
 ```bash
@@ -133,8 +137,12 @@ kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
 kubectl get svc -n argocd
 ```
 
-🖼️ *ArgoCD UI:*
+---
+## Argo cd application Created
 ![ArgoCD1](resource/argocd1.png)
+---
+---
+## Argo cd application Deployment
 ![ArgoCD2](resource/argocd2.png)
 
 ---
@@ -155,23 +163,22 @@ kubectl patch svc prometheus-server -n monitoring -p '{"spec": {"type": "NodePor
 helm install grafana grafana/grafana --namespace monitoring
 kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "NodePort"}}'
 ```
-
-🖼️ *Prometheus & Grafana UI:*
+---
+*Prometheus Monitering:*
 ![Grafana](resource/grafana.png)
 
 ---
 
-## 🖼️ Output Screenshots
+##  Output Screenshots
 
 | Description                  | Image                       |
 | ---------------------------- | --------------------------- |
-| Pipeline Success Output      | ![Output1](resource/output.png)      |
-| Pipeline Output (Stage View) | ![Output2](resource/output2.png)     |
-| SonarQube Analysis           | ![SonarQube](resource/sonarqube.png) |
+| Application Output frontend  | ![Output1](resource/output.png)      |
+| Application Output backend   | ![Output2](resource/output2.png)     |
 
 ---
 
-## 📌 Commands Reference
+##  Commands Reference
 
 ```bash
 # Terraform
