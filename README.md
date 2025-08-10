@@ -11,7 +11,7 @@ This project demonstrates an end-to-end CI/CD pipeline deployed on AWS, with:
 * SonarQube, OWASP Dependency Check, Trivy for code quality & security scanning
 * Amazon EKS for Kubernetes cluster hosting
 * ArgoCD for GitOps-based CD
-* Prometheus & Grafana for monitoring
+* Prometheus & Grafana for monitoring.
 
 ---
 
