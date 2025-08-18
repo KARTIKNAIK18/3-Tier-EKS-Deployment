@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: docker pull kartiknaik/wanderlust-backend-beta:v3
+          image: kartiknaik/wanderlust-backend-beta:v3
           ports:
             - containerPort: 8080
 ---
